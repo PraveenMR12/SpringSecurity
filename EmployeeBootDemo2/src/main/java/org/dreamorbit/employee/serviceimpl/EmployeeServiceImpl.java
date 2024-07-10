@@ -17,16 +17,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	public Employee addEmployee(Employee employee) {
 		Employee emp = repo.findById(employee.getId())
-				.orElseThrow(()->new EmployeeResourceException("Id is Already Present in Database"));
-		
-		return repo.save(emp);
+				.orElse(null);
+		if(emp!=null) {
+			throw new EmployeeResourceException("Id is Already Present in Database");
+		}
+		return repo.save(employee);
 	}
 
 	public Employee getEmployess(int id) {
 		
 		Employee emp = repo.findById(id)
 				.orElseThrow(()->new EmployeeResourceException("Id Not Present in DataBase"));
-			return emp;
+		return emp;
 	}
 
 	public List<Employee> getAllEmployee() {
